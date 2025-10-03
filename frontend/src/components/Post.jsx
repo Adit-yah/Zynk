@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaRegComment, FaHeart, FaCommentDots } from "react-icons/fa";
 import axiosClient from "../utils/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   clearComment,
   setComments,
   updatePostsDetails,
 } from "../feature/postSlice";
-import { getLoginUser } from "../feature/userSlice";
 
 export default function Post({
   post,
@@ -17,7 +16,6 @@ export default function Post({
   commentCount,
 }) {
   const dispatch = useDispatch();
-  const loginUser = useSelector(getLoginUser);
   const [expanded, setExpanded] = useState(false);
   const [maxCaptionLength, setMaxCaptionLength] = useState(100);
   const [likeCount, setLikeCount] = useState(post.likeCount);
@@ -45,14 +43,7 @@ export default function Post({
     if (post.mentions?.length && post.mentions[0]?.username) {
       return `@${post.mentions.map((u) => u.username).join(", @")}`;
     }
-
-    if (post.temporaryMentionUserName?.length) {
-      return `@${post.temporaryMentionUserName
-        .map((u) => u.trim())
-        .join(", @")}`;
-    }
-
-    return "";
+   return "";
   }
 
   function commentHandler(post) {
@@ -72,7 +63,7 @@ export default function Post({
       : "";
   }
  
-  const  loginUSerPost = loginUser._id === post.user._id ? true : false
+
 
   const isLong = post.caption.length > maxCaptionLength;
   const captionToShow = expanded
@@ -84,12 +75,12 @@ export default function Post({
       {/* User Info */}
       <div className="flex items-center gap-3 px-4 py-2">
         <img
-          src={  loginUSerPost ? loginUser.image : post.user.image }
-          alt={  loginUSerPost ? loginUser.username : post.user.username}
+          src={  post.user.image }
+          alt={   post.user.username}
           className="h-11 aspect-square rounded-full object-cover"
         />
         <span className="font-semibold text-text-light dark:text-text-dark">
-          { loginUSerPost ? loginUser.username : post.user.username}
+          {  post.user.username}
         </span>
         <button className="ml-auto text-text-light/80 dark:text-text-dark/80 text-2xl">
           <FaCommentDots />

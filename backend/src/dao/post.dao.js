@@ -1,7 +1,8 @@
 import postModel  from "../models/post.model.js";
 
 export async function createPost (postData){
-    const post = await postModel.create(postData).lean()
+
+    const post = await postModel.create(postData)
     return post
 }
 
@@ -10,7 +11,7 @@ export async function getPosts ( skip = 0  , limit = 10 ) {
    .find()
    .sort({createdAt : -1})
    .skip(skip)
-   .limit(limit)
+   .limit(limit)    
    .populate([
     { path : 'user' , select : "username image"},
     { path : 'mentions' , select : 'username'}
@@ -26,7 +27,7 @@ export async function IncDecLikeFromPost (postId , mode) {
         { _id : postId},  // filter on basis of id
         { $inc : {likeCount : increment}}, // update condition
         {new : true} //return new obj
-    )
+    ).lean()
     return post 
 }
 
@@ -35,6 +36,6 @@ export async function IncCommentOfPost (postId) {
         { _id : postId},  // filter on basis of id
         { $inc : {commentCount : 1}}, // update condition
         {new : true} //return new obj
-    )
+    ).lean()
     return post 
 }

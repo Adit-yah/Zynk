@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../utils/axios"
 import { addPost } from "../../feature/postSlice";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { FaArrowLeft } from "react-icons/fa";
 import BackChevron from "../../svg/BackChevron";
+import { getLoginUser } from "../../feature/userSlice";
 
 export default function CreatePost() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   // States
+
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
   const [useAI, setUseAI] = useState(false);
@@ -77,13 +79,16 @@ const handlePost = async () => {
   try {
     
     const res = await axiosClient.post("/posts/post", formData);
-    const temporaryMentionUserName = mentionInput.split(',')
-    dispatch(addPost({...res.data.post , temporaryMentionUserName  }))
+    setImage(null)
+    setCaption('')
+    setMentionInput('')
+    dispatch(addPost(res.data.post))
     setIsUploading(false)
+    console.log(res.data.post.caption);
     alert("Post created! 🎉");
-    navigate(-1);
+    navigate('/home');
   } catch (err) {
-    console.error(err);
+    setIsUploading(false)
   }
 };
 
