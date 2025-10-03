@@ -114,10 +114,3 @@ when all the pages is integrated google auth and other optimization is perform
 
 
 
-Update on  "Zynk" 🚀
-✅ Completed: Navigation bar &  layout
-⚠️ Issue :  Responsiveness was challenging
-🛠️ Fix : Added a layout for responsiveness
-🧹 UI/UX : Pages & Components  completed
-⏭️ Next Steps: Integrate  pages into the app
-#100DaysOfCode #BuildInPublic #DevJourney #MERN
