@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+
+@theme {
+
+  --color-primary: #070e64;
+  --color-secondary: #f81bae;
+  --color-accent: #00D2FF;
+  --color-success: #4ADE80;
+  --color-warning: #FACC15;
+  --color-error: #F43F5E;
+  
+  --color-bg-light: #F3F0FF;
+  --color-bg-dark: #18122B;
+  --color-text-light: #18122B;
+  --color-text-dark:  #F3F0FF;
+
+  --color-gradient-from-light : #8B5CF6;
+  --color-gradient-via-light : #EC4899;
+  --color-gradient-to-light : #FDE68A;  
+
+  --color-gradient-from-dark : #0D0D2B; 
+  --color-gradient-via-dark : #5B21B6;  
+  --color-gradient-to-dark : #DB2777;  
+
+  --color-background-light: #f5f7ff; 
+  --color-background-dark: #1f1f2d;  
+}
+
+
+/* Hide scrollbar but keep scrolling */
+.main-content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.main-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
