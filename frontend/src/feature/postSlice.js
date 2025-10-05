@@ -16,8 +16,9 @@ const postSlice = createSlice({
 
     updatePostsDetails: (state, action) => {
       state.posts = state.posts.map((post) => {
+       const isLike = (post.likeCount === action.payload.likeCount )? post.isLike : !post.isLike
         return post._id === action.payload._id
-          ? { ...post, ...action.payload, user: post.user  , mentions: post.mentions}
+          ? { ...post, ...action.payload, user: post.user , isLike , mentions: post.mentions}
           : post;
       });
     },

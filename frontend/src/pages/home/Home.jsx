@@ -25,8 +25,8 @@ export default function HomePage() {
     reduxPosts.length > 0
       ? setPostsS(reduxPosts)
       : axiosClient.get("/posts?skip=0&limit=10").then((res) => {
-        dispatch(setPosts(res.data.posts));
-        setPostsS(res.data.posts);
+        dispatch(setPosts(res.data.updatedPosts));
+        setPostsS(res.data.updatedPosts);
         });
   }, []);
 

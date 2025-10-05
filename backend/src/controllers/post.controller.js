@@ -1,5 +1,6 @@
+import { set } from "mongoose";
 import { createComment, getComments } from "../dao/comment.dao.js";
-import { createLike, deleteLike, isLiked } from "../dao/like.dao.js";
+import { createLike, deleteLike, isLiked, userLikedPosts } from "../dao/like.dao.js";
 import {
   createPost,
   getPosts,
@@ -9,7 +10,7 @@ import {
 import { findMentionsUsers } from "../dao/user.dao.js";
 import { generateCaption } from "../services/ai.service.js";
 import { uploadImage } from "../services/storage.services.js";
-import { v4 as uuidv4 } from "uuid"; // use yo generate unique name of post in database
+import { stringify, v4 as uuidv4 } from "uuid"; // use yo generate unique name of post in database
 
 export async function createPostController(req, res) {
   const { caption } = req.body;
@@ -77,15 +78,25 @@ export async function createPostController(req, res) {
 
 export async function getPostsController(req, res) {
   const { skip, limit } = req.query;
-  // here we apply a validator so we get query in our parameters which we decide
-  // express-validator , zod npm package
+
   const posts = await getPosts(
     skip && (skip >= 0 ? skip : 0),
     limit && (limit <= 20 ? limit : 20)
-  ); // another function  Math.min(limit , 20)
+  );
+
+  const postIdArray = posts.map( post => post._id)
+  
+  const likedPosts = await userLikedPosts({postIdArray , userId : req.user._id})
+
+  const  likedPostsSet = new Set(likedPosts.map( l => String(l.post)))
+  const  updatedPosts  =  posts.map(post => {
+        return  { ...post , "isLike" : likedPostsSet.has(String(post._id))}
+    })
+    
+
   res.status(200).json({
     message: "Posts fetched successfully",
-    posts,
+    updatedPosts,
   });
 }
 

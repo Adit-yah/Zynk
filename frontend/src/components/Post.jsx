@@ -19,6 +19,8 @@ export default function Post({
   const [expanded, setExpanded] = useState(false);
   const [maxCaptionLength, setMaxCaptionLength] = useState(100);
   const [likeCount, setLikeCount] = useState(post.likeCount);
+  const [isLike, setIsLike] = useState(post.isLike)
+
 
   // Adjust caption length based on screen size
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function Post({
     axiosClient.post("posts/like", { post: postId }).then((res) => {
       setLikeCount(res.data.updatedPost.likeCount);
       dispatch(updatePostsDetails(res.data.updatedPost));
+      setIsLike(!isLike)
     });
   }
 
@@ -104,7 +107,7 @@ export default function Post({
             className="flex items-center gap-1 text-2xl cursor-pointer text-text-light/75 dark:text-text-dark/75"
           >
             <div className="flex flex-col items-center">
-              <FaHeart className="text-red-500" />
+              <FaHeart className={`${isLike ? 'text-red-500': 'text-gray-400'}`} />
               <p className="text-sm font-medium">{likeCount} likes</p>
             </div>
           </button>
